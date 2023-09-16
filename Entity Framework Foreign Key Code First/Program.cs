@@ -41,7 +41,11 @@ using System.Runtime.Remoting.Contexts;
 
         select *
         from PlayLists
-        
+
+        --insert into Videos values ('Me Title', 'Whatever', 5)     // to comment in SQLServer is type --
+        insert into Videos values ('Me Title', 'Whatever', 1)        
+
+
         use master          // switch database
  * 
  * 
@@ -80,6 +84,14 @@ class MainClass
     {
         MeContext db = new MeContext(); // Pipeline to VS and EntityFramework SQLServer app
 
+        PlayList theList = db.Playlists.Include(list => list.Videos).Single();
+
+        foreach(Video vid in  theList.Videos)
+            Console.WriteLine(vid.Title);
+
+        //db.Videos.Select(v => v.Title).ToList().ForEach(Console.WriteLine);
+        return;     // ignore the line of code below
+
         db.Database.Delete();
         Video meVideo = new Video
         {
@@ -91,6 +103,7 @@ class MainClass
         mePlaylist.Title = "Entity Framework";
 
         mePlaylist.Videos = new List<Video> { meVideo };
+        db.Playlists.Add(mePlaylist);   // Foreign key relation to ID
         db.SaveChanges();
 
 
