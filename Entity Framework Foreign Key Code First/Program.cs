@@ -32,6 +32,19 @@ using System.Runtime.Remoting.Contexts;
 </configuration>
  * 
  * 
+ * 
+ *      ------ SQLServer - New Query CMD --------
+ *      use MyTestDb
+
+ *      select *
+        from Videos
+
+        select *
+        from PlayLists
+        
+        use master          // switch database
+ * 
+ * 
  */
 
 
@@ -67,17 +80,18 @@ class MainClass
     {
         MeContext db = new MeContext(); // Pipeline to VS and EntityFramework SQLServer app
 
-        //db.Database.Delete();
+        db.Database.Delete();
         Video meVideo = new Video
         {
             Title = "Hello World Entity Framework",
             Description = "Learn the entity framework"
         };
         db.Videos.Add(meVideo);
-        //PlayList mePlaylist = new PlayList();
-        //mePlaylist.Title = "Entity Framework";
-        //
-        //mePlaylist.Videos = new List<Video> { meVideo };
+        PlayList mePlaylist = new PlayList();
+        mePlaylist.Title = "Entity Framework";
+
+        mePlaylist.Videos = new List<Video> { meVideo };
+        db.SaveChanges();
 
 
 
